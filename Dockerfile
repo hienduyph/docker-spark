@@ -29,6 +29,8 @@ RUN cd $SPARK_HOME/jars/\
   && curl -LO https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.352/aws-java-sdk-bundle-1.12.352.jar  \
   && curl -LO https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${HADOOP_VERSION}/hadoop-aws-${HADOOP_VERSION}.jar
 
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/tini", "--"]
-CMD ["spark-submit"]
+ENTRYPOINT ["/tini", "--", "/entrypoint.sh"]
+CMD ["driver"]
