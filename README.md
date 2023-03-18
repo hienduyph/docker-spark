@@ -1,9 +1,7 @@
 # Docker Spark
 
-[![Docker Repository on Quay](https://quay.io/repository/hienduyph/apache-spark/status "Docker Repository on Quay")](https://quay.io/repository/hienduyph/apache-spark)
-
 ```bash
-docker pull quay.io/hienduyph/apache-spark:latest
+docker pull ghcr.io/hienduyph/spark:latest
 ```
 
 ##  Useful Jars
