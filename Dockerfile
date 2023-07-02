@@ -13,9 +13,9 @@ ENV SPARK_HOME /opt/spark
 ENV PATH="${SPARK_HOME}/bin:${SPARK_HOME}/sbin:${PATH}"
   
 ARG SPARK_VERSION
-ARG HADOOP_VERSION=3.3.4
+ARG HADOOP_VERSION=3.4.1
 ARG SCALA=2.12
-ENV SPARK_VERSION=${SPARK_VERSION:-3.3.2}
+ENV SPARK_VERSION=${SPARK_VERSION:-3.4.1}
 ENV SCALA_VERSION=${SCALA}
 
 WORKDIR $SPARK_HOME
@@ -24,7 +24,7 @@ RUN set -ex \
   && curl -fsSL "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_MAJOR}.tgz" | tar xz --no-same-owner --strip-components=1 -C $SPARK_HOME \
   && mkdir -p $SPARK_HOME/jars/ && cd $SPARK_HOME/jars/ \
   && curl -LO https://repo1.maven.org/maven2/org/apache/spark/spark-avro_${SCALA}/${SPARK_VERSION}/spark-avro_${SCALA}-${SPARK_VERSION}.jar \
-  && export AWS_VERSION=1.12.429 \
+  && export AWS_VERSION=1.12.500 \
   && curl -LO https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/${AWS_VERSION}/aws-java-sdk-bundle-${AWS_VERSION}.jar \
   && curl -LO https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${HADOOP_VERSION}/hadoop-aws-${HADOOP_VERSION}.jar  
 
