@@ -14,9 +14,9 @@ ENV PATH="${SPARK_HOME}/bin:${SPARK_HOME}/sbin:${PATH}"
   
 ARG SPARK_VERSION
 # must match with hadoop in spark
-ARG HADOOP_VERSION=3.3.4
+ARG HADOOP_VERSION=3.4.0
 ARG SCALA=2.12
-ENV SPARK_VERSION=${SPARK_VERSION:-3.4.1}
+ENV SPARK_VERSION=${SPARK_VERSION:-3.5.1}
 ENV SCALA_VERSION=${SCALA}
 
 WORKDIR $SPARK_HOME
@@ -25,12 +25,14 @@ RUN set -ex \
   && curl -fsSL "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_MAJOR}.tgz" | tar xz --no-same-owner --strip-components=1 -C $SPARK_HOME \
   && mkdir -p $SPARK_HOME/jars/ && cd $SPARK_HOME/jars/ \
   && curl -LO https://repo1.maven.org/maven2/org/apache/spark/spark-avro_${SCALA}/${SPARK_VERSION}/spark-avro_${SCALA}-${SPARK_VERSION}.jar \
-  && export AWS_VERSION=1.12.500 \
+  && export AWS_VERSION=1.12.744 \
   && curl -LO https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/${AWS_VERSION}/aws-java-sdk-bundle-${AWS_VERSION}.jar \
-  && curl -LO https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${HADOOP_VERSION}/hadoop-aws-${HADOOP_VERSION}.jar  
+  && curl -LO https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${HADOOP_VERSION}/hadoop-aws-${HADOOP_VERSION}.jar  \
+  && export ICEBERG_VERSION=1.5.2 \
+  && curl -fsSO "https://repo.maven.apache.org/maven2/org/apache/iceberg/iceberg-spark-runtime-${SPARK_SHORT}_${SCALA}/${ICEBERG_VERSION}/iceberg-spark-runtime-${SPARK_SHORT}_${SCALA}-${ICEBERG_VERSION}.jar"
 
 ENV HIVE_HOME /opt/hive
-RUN HIVE_VERSION=3.1.3 && mkdir -p ${HIVE_HOME} \
+RUN HIVE_VERSION=4.0.0 && mkdir -p ${HIVE_HOME} \
   && curl -fsSL https://archive.apache.org/dist/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz | tar xz --no-same-owner --strip-components=1 -C $HIVE_HOME
 
 ENV SPARK_IMAGE_TAG=${SPARK_VERSION}
