@@ -3,9 +3,8 @@ FROM docker.io/eclipse-temurin:11-jre
 ENV SPARK_HOME /opt/spark
 ENV PATH="${SPARK_HOME}/bin:${SPARK_HOME}/sbin:${PATH}"
 
-RUN userdel ubuntu || true && groupadd  hive --gid=1000 && \
-    useradd -g hive --uid=1000 -d ${SPARK_HOME} hive -m && \
-    chown hive:hive -R ${SPARK_HOME}
+RUN userdel ubuntu || true && groupadd  spark --gid=1000 && \
+    useradd -g spark --uid=1000 -d ${SPARK_HOME} spark -m
 
 RUN apt-get update && \
     apt-get install -y netcat-traditional procps curl && \
@@ -35,7 +34,8 @@ RUN set -ex \
   && curl -Lo awssdk-bundle-${AWS_VERSION}.jar https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/${AWS_VERSION}/bundle-${AWS_VERSION}.jar \
   && curl -LO https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${HADOOP_VERSION}/hadoop-aws-${HADOOP_VERSION}.jar  \
   && curl -LO "https://repo.maven.apache.org/maven2/org/apache/iceberg/iceberg-aws-bundle/${ICEBERG_VERSION}/iceberg-aws-bundle-${ICEBERG_VERSION}.jar" \
-  && curl -fsSO "https://repo.maven.apache.org/maven2/org/apache/iceberg/iceberg-spark-runtime-${SPARK_SHORT}_${SCALA}/${ICEBERG_VERSION}/iceberg-spark-runtime-${SPARK_SHORT}_${SCALA}-${ICEBERG_VERSION}.jar"
+  && curl -fsSO "https://repo.maven.apache.org/maven2/org/apache/iceberg/iceberg-spark-runtime-${SPARK_SHORT}_${SCALA}/${ICEBERG_VERSION}/iceberg-spark-runtime-${SPARK_SHORT}_${SCALA}-${ICEBERG_VERSION}.jar" \
+  && chown spark:spark -R ${SPARK_HOME}
 
 ENV HIVE_HOME /opt/hive
 ENV HIVE_VERSION=4.0.0
